@@ -1,9 +1,10 @@
-package org.example.userservice.service;
+package org.example.userservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.userservice.dto.response.UserResponse;
 import org.example.userservice.model.User;
 import org.example.userservice.model.UserRole;
+import org.example.userservice.service.UserService;
+import org.example.userservice.utils.Constants;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,9 +16,6 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-
-    private static final String USERNAME_OR_PASSWORD_INVALID = "Invalid username or password.";
-
     private final UserService userService;
 
     @Override
@@ -26,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         final User authenticatedUser = userService.getUserModelByUsername(username);
 
         if (Objects.isNull(authenticatedUser)) {
-            throw new UsernameNotFoundException(USERNAME_OR_PASSWORD_INVALID);
+            throw new UsernameNotFoundException(Constants.USERNAME_OR_PASSWORD_INVALID_MESSAGE);
         }
 
         final String authenticatedUsername = authenticatedUser.getUsername();

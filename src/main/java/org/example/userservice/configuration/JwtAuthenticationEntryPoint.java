@@ -14,7 +14,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
-        response.getWriter().write("Invalid auth token");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.getWriter().write(authException.getMessage());
     }
 }

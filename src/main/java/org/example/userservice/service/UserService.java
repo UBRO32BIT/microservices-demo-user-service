@@ -1,6 +1,7 @@
 package org.example.userservice.service;
 
 import org.example.userservice.dto.request.CheckAuthRequest;
+import org.example.userservice.dto.request.UpdateUserRequest;
 import org.example.userservice.dto.response.DeleteUserResponse;
 import org.example.userservice.dto.request.RegistrationRequest;
 import org.example.userservice.dto.request.LoginRequest;
@@ -19,5 +20,6 @@ public interface UserService {
      User getUserModelByUsername(String username);
      List<UserResponse> getAllUsers();
      UserResponse getUserById(Long id);
+     UserResponse updateUserById(Long userId, UpdateUserRequest request);
      DeleteUserResponse deleteUser(Long userId);
 }

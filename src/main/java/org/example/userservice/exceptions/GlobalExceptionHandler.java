@@ -1,4 +1,4 @@
-package org.example.userservice.exception;
+package org.example.userservice.exceptions;
 
 import org.example.userservice.controller.UserController;
 import org.example.userservice.dto.response.ExceptionResponse;
@@ -17,13 +17,13 @@ import java.util.List;
 public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<ExceptionResponse> handleUsernameAlreadyExistsException(UsernameAlreadyExistsException exception) {
-        final ExceptionResponse response = new ExceptionResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
+        final ExceptionResponse response = new ExceptionResponse(exception.getMessage(), HttpStatus.CONFLICT.value());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ExceptionResponse> handleEmailAlreadyExistsException(EmailAlreadyExistsException exception) {
-        final ExceptionResponse response = new ExceptionResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
+        final ExceptionResponse response = new ExceptionResponse(exception.getMessage(), HttpStatus.CONFLICT.value());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

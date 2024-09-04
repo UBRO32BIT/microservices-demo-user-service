@@ -8,9 +8,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class CheckAuthRequest {
-    @NotBlank(message = "Token is required")
-    private String token;
+@AllArgsConstructor
+public class UpdateUserRequest {
+    @NotBlank(message = "Email is required")
+    private String email;
+    @NotBlank(message = "Full name is required")
+    private String fullName;
+    private String profilePicture;
 }

@@ -43,8 +43,10 @@ public class SecurityConfiguration {
                     request.requestMatchers(WHITE_LIST_URLS).permitAll();
                     request.requestMatchers(HttpMethod.GET,"/api/v1/users/**")
                             .permitAll();
-                    request.requestMatchers(HttpMethod.DELETE, "api/v1/users/**")
-                            .hasAuthority(UserRole.USER.name());
+                    request.requestMatchers(HttpMethod.PUT, "/api/v1/users/**")
+                            .hasAuthority(UserRole.ADMIN.name());
+                    request.requestMatchers(HttpMethod.DELETE, "/api/v1/users/**")
+                            .hasAuthority(UserRole.ADMIN.name());
                 })
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint))

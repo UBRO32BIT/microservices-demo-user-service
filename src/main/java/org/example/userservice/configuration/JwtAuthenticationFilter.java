@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.userservice.utils.JwtUtils;
 import org.example.userservice.utils.Constants;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,7 +26,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtTokenManager;
-
+    private final AuthenticationEntryPoint authenticationEntryPoint;
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -32,13 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest req,
             @NonNull HttpServletResponse res,
             @NonNull FilterChain chain) throws IOException, ServletException {
-
-        final String requestURI = req.getRequestURI();
-
-        if (requestURI.contains(Constants.LOGIN_REQUEST_URI) || requestURI.contains(Constants.REGISTRATION_REQUEST_URI)) {
-            chain.doFilter(req, res);
-            return;
-        }
 
         final String header = req.getHeader(Constants.HEADER_STRING);
         String username = null;
@@ -49,7 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenManager.extractUsername(authToken);
             } catch (Exception e) {
-                System.out.println("Authentication Exception: " + e.getMessage());
+                authenticationEntryPoint.commence(req, res, new BadCredentialsException("Invalid access token"));
+                return;
             }
         }
 
